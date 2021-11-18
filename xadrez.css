@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 0;
+}
+
+#tabuleiro{
+    width: 90vmin;
+    height: 90vmin;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+
+#tabuleiro > div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.casaclara {
+    background-color: #6495ed;
+}
+
+.casaescura {
+    background-color: #000080;
+}
+
+.peca {
+    width: 75%;
+    height: 75%;
+    margin: auto;
+}
+
+.peca.preta:hover {
+
+    border: solid 2px white;
+    border-radius: 50%;
+}
+
+.peca.branca:hover {
+
+    border: solid 2px black;
+    border-radius: 50%;
+}
