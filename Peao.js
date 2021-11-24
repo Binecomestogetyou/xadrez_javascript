@@ -3,6 +3,14 @@ class Peao extends Peca{
     constructor(elemento){
 
         super(elemento);
+
+        if(this.cor == 1){
+
+            this.onclick = function(){ 
+                console.log("Cliquie");
+                Tabuleiro.acender(this.gerarMovimentos());
+            };
+        }
     }
 
     /*************************************************************************************************
@@ -15,9 +23,11 @@ class Peao extends Peca{
      *************************************************************************************************
      ************************************************************************************************/
 
-    gerarMovimentos(movimentos){
+    gerarMovimentos(){
 
-        if(Conjunto.estaVazia( new Posicao(this.posicao.coluna, this.posicao.linha + this.cor))){
+        let movimentos = Array();
+
+       // if(Conjunto.estaVazia( new Posicao(this.posicao.coluna, this.posicao.linha + this.cor))){
             
             movimentos.push(new Posicao(this.posicao.coluna, this.posicao.linha + 1));
             
@@ -26,22 +36,24 @@ class Peao extends Peca{
             {
                 movimentos.push(new Posicao(this.posicao.coluna, this.posicao.linha + 2*this.cor));
             }
-        }
+       // }
     
         
         if(this.posicao.coluna > 1
-            && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna - 1, this.posicao.linha + 1))
-            || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )){
+           // && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna - 1, this.posicao.linha + 1))
+           /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/){
                 
             movimentos.push(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1));
         }
             
         if(this.posicao.coluna < 8
-            && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna + 1, this.posicao.linha + 1))
-             || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )){
+           /* && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna + 1, this.posicao.linha + 1))
+             || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )*/){
                 
             movimentos.push(new Posicao(this.posicao.coluna + 1, this.posicao.linha + 1));
         }
+
+        return movimentos
     }
 
     /*************************************************************************************************
@@ -52,9 +64,7 @@ class Peao extends Peca{
 
         this.super.mover();
 
-	    let movimentos = new Array();
-	
-	    this.gerarMovimentos(movimentos);
+	    let movimentos = this.gerarMovimentos();
 	
 	    if(movimentos.size() == 0) return false;
 	    else{

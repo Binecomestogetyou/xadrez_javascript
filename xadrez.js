@@ -1,6 +1,11 @@
-var conjunto = new Conjunto( Array.from(document.getElementsByClassName("peca")) );
+var conjunto = Array.from(document.getElementsByClassName("peca", "branca"));
 
-console.log("Brancas " + conjunto.Brancas.length);
-console.log("Pretas " + conjunto.Pretas.length);
+conjunto.forEach(peca =>
+    
+        {
+            peca.onclick = function(){
 
-
+                Tabuleiro.acender(peca);
+            }
+        }
+    );

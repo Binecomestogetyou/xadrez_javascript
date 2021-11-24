@@ -11,6 +11,7 @@ body {
     height: 90vmin;
     margin: 0;
     padding: 0;
+    border: #000 solid 2px;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -21,6 +22,7 @@ body {
     flex-direction: column;
     align-content: center;
     justify-content: center;
+    z-index: 1;
 }
 
 .casaclara {
@@ -35,6 +37,7 @@ body {
     width: 75%;
     height: 75%;
     margin: auto;
+    z-index: 2;
 }
 
 .peca.preta:hover {
