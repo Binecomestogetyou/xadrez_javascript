@@ -1,9 +1,10 @@
-var conjunto = Array.from(document.getElementsByClassName("peca", "branca"));
+var conjunto = new Conjunto(Array.from(document.getElementsByClassName("peca")));
 
-conjunto.forEach(peca =>
+conjunto.Brancas.forEach(peca =>
     
         {
-            peca.onclick = function(){
+            
+            peca.elemento.onclick = function(){
 
                 Tabuleiro.acender(peca);
             }

@@ -4,6 +4,7 @@ class Conjunto {
 
         this.Brancas = new Array();
         this.Pretas = new Array();
+        let este = this;
 
         pecas.forEach(peca => {
 
@@ -14,27 +15,27 @@ class Conjunto {
                 switch(classes.split(" ")[2]){
 
                     case "peao":
-                        piece = new Peao(peca);
+                        piece = new Peao(peca, este);
                         break;
 
                     case "torre":
-                        piece = new Torre(peca);
+                        piece = new Torre(peca, este);
                         break;
 
                     case "cavalo":
-                        piece = new Cavalo(peca);
+                        piece = new Cavalo(peca, este);
                         break;
 
                     case "bispo":
-                        piece = new Bispo(peca);
+                        piece = new Bispo(peca, este);
                         break;
 
                     case "dama":
-                        piece = new Dama(peca);
+                        piece = new Dama(peca, este);
                         break;
 
                     case "rei":
-                        piece = new Rei(peca);
+                        piece = new Rei(peca, este);
                         
                 }
 
@@ -95,8 +96,8 @@ class Conjunto {
 
         let estavazia = true;
 
-        Brancas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
-        this.Pretas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
+        this.Brancas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
+        //this.Pretas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
         
         return estavazia;
     }
@@ -109,7 +110,7 @@ class Conjunto {
 
         let inimigaocupa = false;
 
-        let aux = cor == -1 ? Pretas : Brancas;
+        let aux = cor == -1 ? this.Pretas : this.Brancas;
         
         aux.forEach(peca => {if(peca.obterPosicao() == posicao) inimigaocupa = true;});
         

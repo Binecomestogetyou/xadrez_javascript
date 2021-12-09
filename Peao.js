@@ -1,16 +1,18 @@
 class Peao extends Peca{
 
-    constructor(elemento){
+    constructor(elemento, conjunto){
 
-        super(elemento);
+        super(elemento, conjunto);
 
         if(this.cor == 1){
 
             this.onclick = function(){ 
-                console.log("Cliquie");
+                
                 Tabuleiro.acender(this.gerarMovimentos());
             };
         }
+
+        this.primeiroMovimento = true;
     }
 
     /*************************************************************************************************
@@ -26,31 +28,34 @@ class Peao extends Peca{
     gerarMovimentos(){
 
         let movimentos = Array();
+        var pos = new Posicao(this.posicao.coluna, this.posicao.linha + this.cor);
 
-       // if(Conjunto.estaVazia( new Posicao(this.posicao.coluna, this.posicao.linha + this.cor))){
+        if(this.conjunto.estaVazia(pos)){
             
-            movimentos.push(new Posicao(this.posicao.coluna, this.posicao.linha + 1));
+            movimentos.push(pos);
+
+            pos = new Posicao(this.posicao.coluna, this.posicao.linha + 2*this.cor);
             
-            if( (this.cor == 1 && this.posicao.linha == 2) || (this.cor == -1 && this.posicao.linha == 7)
-                && Conjunto.estaVazia(Posicao(this.posicao.coluna, this.posicao.linha + 2*this.cor)))
+            if( this.primeiroMovimento && this.conjunto.estaVazia(pos))
             {
-                movimentos.push(new Posicao(this.posicao.coluna, this.posicao.linha + 2*this.cor));
+                movimentos.push(pos);
             }
-       // }
-    
-        
-        if(this.posicao.coluna > 1
-           // && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna - 1, this.posicao.linha + 1))
-           /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/){
-                
-            movimentos.push(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1));
         }
-            
-        if(this.posicao.coluna < 8
-           /* && ( Conjunto.inimigaOcupa(this.cor, Posicao(this.posicao.coluna + 1, this.posicao.linha + 1))
-             || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )*/){
+    
+        pos = new Posicao(this.posicao.coluna - 1, this.posicao.linha + this.cor);
+
+        if(this.posicao.coluna > 1 && this.conjunto.inimigaOcupa(pos))
+           /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/{
                 
-            movimentos.push(new Posicao(this.posicao.coluna + 1, this.posicao.linha + 1));
+            movimentos.push(pos);
+        }
+
+        pos = new Posicao(this.posicao.coluna + 1, this.posicao.linha + this.cor);
+            
+        if(this.posicao.coluna < 8 && this.conjunto.inimigaOcupa(pos)){
+            // || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )*/){
+                
+            movimentos.push(pos);
         }
 
         return movimentos

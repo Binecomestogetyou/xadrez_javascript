@@ -1,8 +1,9 @@
 class Peca {
 
-    constructor(elemento){
+    constructor(elemento, conjunto){
 
         this.elemento = elemento;
+        this.conjunto = conjunto;
         this.posicao = new Posicao(elemento.parentNode.id);
         this.cor = elemento.className.includes("branca") ? 1 : -1;
     }
@@ -42,5 +43,14 @@ class Peca {
 	
         if( (Conjunto.obterEnPassant() === null)
             && (this.obterCor() == Conjunto.obterEnPassant().cor) ) Conjunto.limparEnPassant();
+    }
+
+    /*************************************************************************************************
+     *************************************************************************************************
+     ************************************************************************************************/
+
+    obterPosicao(){
+
+        return this.posicao;
     }
 }

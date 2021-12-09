@@ -4,11 +4,11 @@ class Tabuleiro{
 
     static acender(peca){
 
-        let alvo = Peca.criar(peca);
+        
 
         if(this.casasAcesas !== undefined) Tabuleiro.apagarCasas();
 
-        this.casasAcesas = alvo.gerarMovimentos();
+        this.casasAcesas = peca.gerarMovimentos();
 
         this.acenderCasas();
 
@@ -20,7 +20,13 @@ class Tabuleiro{
         this.casasAcesas.forEach(item =>
             {
                 let casa = document.getElementById(item.emString());
-                casa.style.border = "none";
+
+                if(casa.classList.contains("casaclara")){
+                    casa.style.backgroundColor = "#6495ed";
+                }
+                else{
+                    casa.style.backgroundColor = "#000080";
+                }
             })
     }
 
@@ -30,7 +36,13 @@ class Tabuleiro{
             
             {
                 let casa = document.getElementById(item.emString());
-                casa.style.border = "#f00 solid 1px";
+
+                if(casa.classList.contains("casaclara")){
+                    casa.style.backgroundColor = "#ba55d3";
+                }
+                else{
+                    casa.style.backgroundColor = "#4b0082";
+                }
             }
             );
     }
