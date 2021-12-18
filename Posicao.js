@@ -25,4 +25,9 @@ class Posicao{
 
         return String.fromCharCode(this.coluna + 64) + String.fromCharCode(this.linha + 48);
     }
+
+    igual(pos){
+
+        return this.coluna == pos.coluna && this.linha == pos.linha;
+    }
 }

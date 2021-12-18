@@ -1,27 +1,31 @@
 class Tabuleiro{
 
-    static casasAcesas;
+    constructor(casas){
 
-    static acender(peca){
+        this._casas = casas
+    }
+
+    acender(casas){
 
         
 
-        if(this.casasAcesas !== undefined) Tabuleiro.apagarCasas();
+        if(this.casasAcesas !== undefined) this.apagarCasas();
 
-        this.casasAcesas = peca.gerarMovimentos();
+        this.casasAcesas = casas;
 
         this.acenderCasas();
 
         
     }
 
-    static apagarCasas(){
+    apagarCasas(){
 
         this.casasAcesas.forEach(item =>
             {
+                
                 let casa = document.getElementById(item.emString());
 
-                if(casa.classList.contains("casaclara")){
+                if(casa.classList.contains("clara")){
                     casa.style.backgroundColor = "#6495ed";
                 }
                 else{
@@ -30,14 +34,14 @@ class Tabuleiro{
             })
     }
 
-    static acenderCasas(){
+    acenderCasas(){
 
         this.casasAcesas.forEach(item =>
             
             {
                 let casa = document.getElementById(item.emString());
 
-                if(casa.classList.contains("casaclara")){
+                if(casa.classList.contains("clara")){
                     casa.style.backgroundColor = "#ba55d3";
                 }
                 else{
@@ -45,5 +49,10 @@ class Tabuleiro{
                 }
             }
             );
+    }
+
+    get obterCasas(){
+
+        return this._casas;
     }
 }

@@ -71,6 +71,11 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
+    set definirUltimaPecaClicada(peca){
+
+        this.ultimaPecaClicada = peca;
+    }
+
     destruir(posicao, cor){
 
         let aux = cor == 1 ? Brancas : Pretas;
@@ -100,6 +105,22 @@ class Conjunto {
         //this.Pretas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
         
         return estavazia;
+    }
+
+    executarMovimento(ultima, mov){
+
+        ultima.posicao = mov.posicao;
+
+        if(mov.natureza === "EN_PASSANT"){
+
+            this.definirEnPassant = ultima;
+        }
+        else if(mov.natureza === "CAPTURA"){
+
+            this.destruir(mov.posicao);
+        }
+
+        if(ultima.classe === "Peao" || ultima.classe === "Torre") ultima.primeiroMovimento = false;
     }
 
     /*************************************************************************************************

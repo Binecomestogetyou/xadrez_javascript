@@ -27,18 +27,18 @@ class Peao extends Peca{
 
     gerarMovimentos(){
 
-        let movimentos = Array();
+        let movimentos = new Array();
         var pos = new Posicao(this.posicao.coluna, this.posicao.linha + this.cor);
 
         if(this.conjunto.estaVazia(pos)){
             
-            movimentos.push(pos);
+            movimentos.push(new Movimento(pos, "NEUTRO"));
 
             pos = new Posicao(this.posicao.coluna, this.posicao.linha + 2*this.cor);
             
             if( this.primeiroMovimento && this.conjunto.estaVazia(pos))
             {
-                movimentos.push(pos);
+                movimentos.push(new Movimento(pos, "EN_PASSANT"));
             }
         }
     
@@ -47,7 +47,7 @@ class Peao extends Peca{
         if(this.posicao.coluna > 1 && this.conjunto.inimigaOcupa(pos))
            /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/{
                 
-            movimentos.push(pos);
+            movimentos.push(pos, "CAPTURA");
         }
 
         pos = new Posicao(this.posicao.coluna + 1, this.posicao.linha + this.cor);
@@ -55,7 +55,7 @@ class Peao extends Peca{
         if(this.posicao.coluna < 8 && this.conjunto.inimigaOcupa(pos)){
             // || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )*/){
                 
-            movimentos.push(pos);
+            movimentos.push(pos, "CAPTURA");
         }
 
         return movimentos
@@ -69,7 +69,7 @@ class Peao extends Peca{
 
         this.super.mover();
 
-	    let movimentos = this.gerarMovimentos();
+	    this.movimentos = this.gerarMovimentos();
 	
 	    if(movimentos.size() == 0) return false;
 	    else{
