@@ -5,7 +5,7 @@ class Peca {
         this.elemento = elemento;
         this.conjunto = conjunto;
         this.posicao = new Posicao(elemento.parentNode.id);
-        this.cor = elemento.className.includes("branca") ? 1 : -1;
+        this._cor = elemento.className.includes("branca") ? 1 : -1;
     }
 
     static criar(peca){
@@ -39,16 +39,6 @@ class Peca {
      *************************************************************************************************
      ************************************************************************************************/
 
-    mover(){
-	
-        if( (Conjunto.obterEnPassant() === null)
-            && (this.obterCor() == Conjunto.obterEnPassant().cor) ) Conjunto.limparEnPassant();
-    }
-
-    /*************************************************************************************************
-     *************************************************************************************************
-     ************************************************************************************************/
-
     movimentoEPossivel(posicao){
 
        let aux = null;
@@ -75,9 +65,15 @@ class Peca {
         console.log(this.elemento);
     }
 
+    get cor(){
+
+        return this._cor;
+    }
+
     get obterMovimentos(){
 
         this.movimentosPossiveis = this.gerarMovimentos();
+
         return this.movimentosPossiveis;
     }
 

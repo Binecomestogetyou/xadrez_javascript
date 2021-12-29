@@ -10,4 +10,9 @@ class Movimento{
 
         return this._destino;
     }
+
+    get natureza(){
+
+        return this._natureza;
+    }
 }

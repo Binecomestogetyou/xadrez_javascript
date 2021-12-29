@@ -37,6 +37,10 @@ tabuleiro.obterCasas.forEach(casa => {
             casa.appendChild(ultima.elemento);
 
             tabuleiro.apagarCasas();
+
+            ultima.executarMovimento(mov);
+
+            conjunto.jogarPreta();
         }
     }
 })
