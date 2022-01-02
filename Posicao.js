@@ -1,28 +1,33 @@
 class Posicao{
 
-    Posicao(parametro1, parametro2){
+    constructor(parametro1, parametro2){
 
         if(parametro2 === undefined){
 
-            coluna = parametro1.charCodeAt(0) - 64;
-            linha = parametro1.charCodeAt(1) - 64;
+            this.coluna = parametro1.charCodeAt(0) - 64;
+            this.linha = parametro1.charCodeAt(1) - 48;
         }
         else{
 
-            coluna = parametro1;
-            linha = parametro2;
+            this.coluna = parametro1;
+            this.linha = parametro2;
         }
     }
 
     
 
-    posicaoPorCoordenadas(coluna, linha){
+    /*posicaoPorCoordenadas(coluna, linha){
 
-        return new Posicao(String.fromCharCode(coluna + 64), String.fromCharCode(linha + 64));
-    }
+        return new Posicao(String.fromCharCode(coluna), String.fromCharCode(linha + 64));
+    }*/
 
     emString(){
 
-        return String.fromCharCode(coluna + 64) + String.fromCharCode(linha + 64);
+        return String.fromCharCode(this.coluna + 64) + String.fromCharCode(this.linha + 48);
+    }
+
+    igual(pos){
+
+        return this.coluna == pos.coluna && this.linha == pos.linha;
     }
 }

@@ -4,6 +4,7 @@ class Conjunto {
 
         this.Brancas = new Array();
         this.Pretas = new Array();
+        let este = this;
 
         pecas.forEach(peca => {
 
@@ -14,32 +15,33 @@ class Conjunto {
                 switch(classes.split(" ")[2]){
 
                     case "peao":
-                        piece = new Peao(peca);
+                        piece = new Peao(peca, este);
                         break;
-
+/*
                     case "torre":
-                        piece = new Torre(peca);
+                        piece = new Torre(peca, este);
                         break;
 
                     case "cavalo":
-                        piece = new Cavalo(peca);
+                        piece = new Cavalo(peca, este);
                         break;
 
                     case "bispo":
-                        piece = new Bispo(peca);
+                        piece = new Bispo(peca, este);
                         break;
 
                     case "dama":
-                        piece = new Dama(peca);
+                        piece = new Dama(peca, este);
                         break;
 
                     case "rei":
-                        piece = new Rei(peca);
-                        
+                        piece = new Rei(peca, este);
+                        */
                 }
 
+                if(piece !== undefined){
                 if(piece.cor == 1) this.Brancas.push(piece);
-                else this.Pretas.push(piece);
+                else this.Pretas.push(piece);}
             }
         );
 
@@ -70,20 +72,29 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
+    set definirUltimaPecaClicada(peca){
+
+        this.ultimaPecaClicada = peca;
+    }
+
     destruir(posicao, cor){
 
-        let aux = cor == 1 ? Brancas : Pretas;
+        let aux = cor == 1 ? this.Brancas : this.Pretas;
         
-        let i = 0;
-        
-        aux.forEach(peca =>
-            {
-                if(peca.obterPosicao() == posicao){
-                    aux.splice(aux.indexOf(peca), 1);
-                return;
-                }
+        for(let i = 0; i < aux.length; i++){
+                
+            if(aux[i].obterPosicao().igual(posicao)){
+
+                let eleAux = aux[i].elemento;
+
+                eleAux.parentNode.removeChild(eleAux);
+
+                aux.splice(i, 1);
+
+                
+                break;
             }
-        );
+        }
     }
 
     /*************************************************************************************************
@@ -95,10 +106,26 @@ class Conjunto {
 
         let estavazia = true;
 
-        Brancas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
-        this.Pretas.forEach(peca => { if( peca.obterPosicao() == casa) estavazia = false;});
+        this.Brancas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
+        this.Pretas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
         
         return estavazia;
+    }
+
+    executarMovimento(ultima, mov){
+
+        ultima.posicao = mov.posicao;
+
+        if(mov.natureza === "EN_PASSANT"){
+
+            this.definirEnPassant = ultima;
+        }
+        else if(mov.natureza === "CAPTURA"){
+
+            this.destruir(mov.posicao);
+        }
+
+        if(ultima.classe === "Peao" || ultima.classe === "Torre") ultima.primeiroMovimento = false;
     }
 
     /*************************************************************************************************
@@ -109,9 +136,9 @@ class Conjunto {
 
         let inimigaocupa = false;
 
-        let aux = cor == -1 ? Pretas : Brancas;
+        let aux = cor == -1 ? this.Pretas : this.Brancas;
         
-        aux.forEach(peca => {if(peca.obterPosicao() == posicao) inimigaocupa = true;});
+        aux.forEach(peca => {if(peca.obterPosicao().igual(posicao)) inimigaocupa = true;});
         
         return inimigaocupa;
     }
@@ -121,13 +148,25 @@ class Conjunto {
     *************************************************************************************************/
 
 
-    jogarBranca(){
+    jogarPreta(){
 
-        let a = Math.floor(Math.random()*this.Brancas.length);
+        let aux = [...this.Pretas];
 
-        console.log("Vale " + a);
 
-        while(this.Brancas[a].mover() == false){}
+
+        while(aux.length > 0){
+            
+            let a = Math.floor(Math.random()*aux.length);
+
+            let mov = aux[a].mover();
+
+            if(mov === null) aux.splice(a, 1);
+            else{
+                
+                aux[a].executarMovimento(mov)
+                return;
+            }
+        }
     }
 
     /*************************************************************************************************
