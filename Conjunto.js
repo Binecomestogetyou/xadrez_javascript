@@ -4,6 +4,7 @@ class Conjunto {
 
         this.Brancas = new Array();
         this.Pretas = new Array();
+        this.enPassant = null;
         let este = this;
 
         pecas.forEach(peca => {
@@ -218,9 +219,15 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    valeEnPassant(posicao){
+    valeEnPassant(posicao, cor){
 
-        if(enPassant === null) return false;
-        else return posicao == enPassant.obterPosicao();
+        if(this.enPassant === null) return false;
+        else{
+
+            let aux = new Posicao( posicao.coluna, posicao.linha + cor);
+		
+		    if(this.enPassant.obterPosicao().igual(aux) && this.enPassant.obterCor() == cor) return true;
+		    else return false;
+        }
     }
 }
