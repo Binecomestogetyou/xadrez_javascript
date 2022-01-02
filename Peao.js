@@ -21,8 +21,6 @@ class Peao extends Peca{
 
     executarMovimento(movimento){
 
-        console.log("Executar movimento");
-
         this.primeiroMovimento = false;
         this.mudarPosicao(movimento.destino);
   
@@ -59,7 +57,7 @@ class Peao extends Peca{
             
             if( this.primeiroMovimento && this.conjunto.estaVazia(pos))
             {
-                movimentos.push(new Movimento(pos, "EN_PASSANT"));
+                movimentos.push(new Movimento(pos, "EN_PASSANT_PASSIVO"));
             }
         }
     
@@ -93,7 +91,7 @@ class Peao extends Peca{
 	    if(this.movimentos.length == 0) return null;
 	    else{
 	
-	    	let mov = this.movimentos[Math.floor(Math.random(this.movimentos.length))];
+	    	let mov = this.movimentos[Math.floor(Math.random()*this.movimentos.length)];
             this.mudarPosicao(mov.destino);
 
             let casa = document.getElementById(mov.destino.emString());
