@@ -61,12 +61,16 @@ class Peao extends Peca{
             }
         }
     
-        pos = new Posicao(this.posicao.coluna - 1, this.posicao.linha + this.cor);
+        
 
-        if(this.posicao.coluna > 1 && this.conjunto.inimigaOcupa(-this.cor, pos))
-           /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/{
+        if(this.posicao.coluna > 1){
+            
+            pos = new Posicao(this.posicao.coluna - 1, this.posicao.linha + this.cor);
+
+            if(this.conjunto.inimigaOcupa(-this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+            else if(this.conjunto.valeEnPassant(pos, this.cor)) movimentos.push(new Movimento(pos, "EN_PASSANT_ATIVA"));
                 
-            movimentos.push(new Movimento(pos, "CAPTURA"));
+            
         }
 
         pos = new Posicao(this.posicao.coluna + 1, this.posicao.linha + this.cor);
