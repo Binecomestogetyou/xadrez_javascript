@@ -67,7 +67,7 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    definirEnPassant(peao){ enPassant = peao; }
+    definirEnPassant(peao){ this.enPassant = peao; }
 
     /*************************************************************************************************
      *************************************************************************************************
@@ -113,22 +113,6 @@ class Conjunto {
         return estavazia;
     }
 
-    executarMovimento(ultima, mov){
-
-        ultima.posicao = mov.posicao;
-
-        if(mov.natureza === "EN_PASSANT"){
-
-            this.definirEnPassant = ultima;
-        }
-        else if(mov.natureza === "CAPTURA"){
-
-            this.destruir(mov.posicao);
-        }
-
-        if(ultima.classe === "Peao" || ultima.classe === "Torre") ultima.primeiroMovimento = false;
-    }
-
     /*************************************************************************************************
     **************************************************************************************************
     *************************************************************************************************/
@@ -164,7 +148,6 @@ class Conjunto {
             if(mov === null) aux.splice(a, 1);
             else{
                 
-                aux[a].executarMovimento(mov)
                 return;
             }
         }
@@ -221,12 +204,16 @@ class Conjunto {
 
     valeEnPassant(posicao, cor){
 
+        let posicaoCorrigida = new Posicao(posicao.coluna, posicao.linha + cor);
+
         if(this.enPassant === null) return false;
         else{
-
-            let aux = new Posicao( posicao.coluna, posicao.linha + cor);
 		
-		    if(this.enPassant.obterPosicao().igual(aux) && this.enPassant.obterCor() == cor) return true;
+		    if(this.enPassant.obterPosicao().igual(posicaoCorrigida) && this.enPassant.cor == cor) {
+                
+                console.log("En passant foi");
+                return true;
+            }
 		    else return false;
         }
     }

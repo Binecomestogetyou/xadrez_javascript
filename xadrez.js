@@ -9,16 +9,9 @@ conjunto.Brancas.forEach(peca =>
 
                 event.stopPropagation();
 
-                let movimentosPossiveis = new Array();
+                tabuleiro.acender(peca.posicoesPossiveis);
 
-                peca.obterMovimentos.forEach(movimento => {
-
-                    movimentosPossiveis.push(movimento.destino);
-                })
-
-                tabuleiro.acender(movimentosPossiveis);
                 conjunto.definirUltimaPecaClicada = peca;
-            
             });
         }
     );
@@ -27,20 +20,21 @@ tabuleiro.obterCasas.forEach(casa => {
 
     casa.onclick = function(){
 
-        let ultima = conjunto.ultimaPecaClicada
+        let ultima = conjunto.ultimaPecaClicada;
+
+        let mov = new Movimento(new Posicao(casa.id), ultima.movimentoEPossivel(new Posicao(casa.id)));
         
-        let mov = ultima.movimentoEPossivel(new Posicao(casa.id));
-
-        if(mov === null) tabuleiro.apagarCasas();
-        else {
-
-            casa.appendChild(ultima.elemento);
-
-            tabuleiro.apagarCasas();
+        if(mov.natureza){
 
             ultima.executarMovimento(mov);
 
+            tabuleiro.apagarCasas();
+
             conjunto.jogarPreta();
+        }
+        else{
+
+            tabuleiro.apagarCasas();
         }
     }
 })

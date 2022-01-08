@@ -21,7 +21,7 @@ class Posicao{
         return new Posicao(String.fromCharCode(coluna), String.fromCharCode(linha + 64));
     }*/
 
-    emString(){
+    get emString(){
 
         return String.fromCharCode(this.coluna + 64) + String.fromCharCode(this.linha + 48);
     }
