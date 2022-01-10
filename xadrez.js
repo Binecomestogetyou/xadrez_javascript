@@ -28,6 +28,8 @@ tabuleiro.obterCasas.forEach(casa => {
 
             ultima.executarMovimento(mov);
 
+            if(mov.natureza != "EN_PASSANT_PASSIVO") conjunto.enPassant = null;
+
             tabuleiro.apagarCasas();
 
             conjunto.jogarPreta();
@@ -36,5 +38,7 @@ tabuleiro.obterCasas.forEach(casa => {
 
             tabuleiro.apagarCasas();
         }
+
+        console.log(conjunto.enPassant);
     }
 })

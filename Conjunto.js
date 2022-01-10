@@ -100,9 +100,9 @@ class Conjunto {
 
     destruirEnPassant(){
 
-        this.destruir(enPassant.obterPosicao(), enPassant.obterCor());
+        this.destruir(this.enPassant.obterPosicao(), this.enPassant.cor);
 	
-	    enPassant = 0;
+	    this.enPassant = null;
     }
 
     /*************************************************************************************************
@@ -155,6 +155,7 @@ class Conjunto {
             if(mov === null) aux.splice(a, 1);
             else{
                 
+                if(mov.natureza != "EN_PASSANT_PASSIVO") this.enPassant = null;
                 return;
             }
         }
@@ -174,7 +175,7 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    obterEnPassant(){ return enPassant; }
+    obterEnPassant(){ return this.enPassant; }
 
     /*************************************************************************************************
      *************************************************************************************************
@@ -216,12 +217,8 @@ class Conjunto {
         if(this.enPassant === null) return false;
         else{
 		
-		    if(this.enPassant.obterPosicao().igual(posicaoCorrigida) && this.enPassant.cor == cor) {
-                
-                console.log("En passant foi");
-                return true;
-            }
-		    else return false;
+		    return this.enPassant.obterPosicao().igual(posicaoCorrigida)
+                    && this.enPassant.cor == cor ? true : false;
         }
     }
 }
