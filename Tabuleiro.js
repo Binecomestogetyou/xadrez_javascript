@@ -11,9 +11,7 @@ class Tabuleiro{
 
         if(this.casasAcesas !== undefined) this.apagarCasas();
 
-        this.casasAcesas = casas;
-
-        this.acenderCasas();
+        this.acenderCasas(casas);
 
         
     }
@@ -23,7 +21,7 @@ class Tabuleiro{
         this.casasAcesas.forEach(item =>
             {
                 
-                let casa = document.getElementById(item.emString());
+                let casa = document.getElementById(item.emString);
 
                 if(casa.classList.contains("clara")){
                     casa.style.backgroundColor = "#6495ed";
@@ -34,12 +32,14 @@ class Tabuleiro{
             })
     }
 
-    acenderCasas(){
+    acenderCasas(casasParaAcender){
+
+        this.casasAcesas = casasParaAcender;
 
         this.casasAcesas.forEach(item =>
             
             {
-                let casa = document.getElementById(item.emString());
+                let casa = document.getElementById(item.emString);
 
                 if(casa.classList.contains("clara")){
                     casa.style.backgroundColor = "#ba55d3";

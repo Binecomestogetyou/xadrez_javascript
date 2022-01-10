@@ -4,6 +4,7 @@ class Conjunto {
 
         this.Brancas = new Array();
         this.Pretas = new Array();
+        this.enPassant = null;
         let este = this;
 
         pecas.forEach(peca => {
@@ -66,7 +67,7 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    definirEnPassant(peao){ enPassant = peao; }
+    definirEnPassant(peao){ this.enPassant = peao; }
 
     /*************************************************************************************************
      *************************************************************************************************
@@ -97,6 +98,13 @@ class Conjunto {
         }
     }
 
+    destruirEnPassant(){
+
+        this.destruir(this.enPassant.obterPosicao(), this.enPassant.cor);
+	
+	    this.enPassant = null;
+    }
+
     /*************************************************************************************************
      *************************************************************************************************
      ************************************************************************************************/
@@ -110,22 +118,6 @@ class Conjunto {
         this.Pretas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
         
         return estavazia;
-    }
-
-    executarMovimento(ultima, mov){
-
-        ultima.posicao = mov.posicao;
-
-        if(mov.natureza === "EN_PASSANT"){
-
-            this.definirEnPassant = ultima;
-        }
-        else if(mov.natureza === "CAPTURA"){
-
-            this.destruir(mov.posicao);
-        }
-
-        if(ultima.classe === "Peao" || ultima.classe === "Torre") ultima.primeiroMovimento = false;
     }
 
     /*************************************************************************************************
@@ -163,7 +155,7 @@ class Conjunto {
             if(mov === null) aux.splice(a, 1);
             else{
                 
-                aux[a].executarMovimento(mov)
+                if(mov.natureza != "EN_PASSANT_PASSIVO") this.enPassant = null;
                 return;
             }
         }
@@ -183,7 +175,7 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    obterEnPassant(){ return enPassant; }
+    obterEnPassant(){ return this.enPassant; }
 
     /*************************************************************************************************
      *************************************************************************************************
@@ -218,9 +210,15 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    valeEnPassant(posicao){
+    valeEnPassant(posicao, cor){
 
-        if(enPassant === null) return false;
-        else return posicao == enPassant.obterPosicao();
+        let posicaoCorrigida = new Posicao(posicao.coluna, posicao.linha + cor);
+
+        if(this.enPassant === null) return false;
+        else{
+		
+		    return this.enPassant.obterPosicao().igual(posicaoCorrigida)
+                    && this.enPassant.cor == cor ? true : false;
+        }
     }
 }
