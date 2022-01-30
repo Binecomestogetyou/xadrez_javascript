@@ -115,6 +115,42 @@ class Peao extends Peca{
 
         document.getElementById(destino.emString).appendChild(this.elemento);
     }
+
+    /*************************************************************************************************
+     *************************************************************************************************
+     ************************************************************************************************/
+
+    promover(peca){
+
+        let novaPeca;
+
+        switch(peca){
+
+            case 0:
+                this.elemento.className = this.elemento.className.replace("peao", "torre");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/TP.png" : "./res/images/TB.png";
+                
+                return new Torre(this.elemento, this.conjunto);
+
+            case 1:
+                this.elemento.className = this.elemento.className.replace("peao", "cavalo");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/CP.png" : "./res/images/CB.png";
+                    
+                return new Cavalo(this.elemento, this.conjunto);
+            
+            case 2:
+                this.elemento.className = this.elemento.className.replace("peao", "bispo");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/BP.png" : "./res/images/BB.png";
+                    
+                return new Bispo(this.elemento, this.conjunto);
+
+            case 3:
+                this.elemento.className = this.elemento.className.replace("peao", "dama");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/DP.png" : "./res/images/DB.png";
+                    
+                return new Dama(this.elemento, this.conjunto);
+        }
+    }
         
 
 

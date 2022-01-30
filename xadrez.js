@@ -1,5 +1,24 @@
-var conjunto = new Conjunto(Array.from(document.getElementsByClassName("peca")));
-var tabuleiro = new Tabuleiro(Array.from(document.getElementsByClassName("casa")));
+let conjunto = new Conjunto(Array.from(document.getElementsByClassName("peca")));
+let tabuleiro = new Tabuleiro(Array.from(document.getElementsByClassName("casa")));
+let promocao = document.getElementById("promocao");
+
+Array.from(promocao.children).forEach(filho => {
+
+    filho.onclick = function(){
+
+        conjunto.promover(filho.innerHTML);
+    };
+});
+
+function promover(){
+
+    promocao.style.visibility = "visible";
+
+    promocao.addEventListener("click", function(){
+
+        promocao.style.visibility = "hidden";
+    });
+}
 
 conjunto.Brancas.forEach(peca =>
     
@@ -32,13 +51,13 @@ tabuleiro.obterCasas.forEach(casa => {
 
             tabuleiro.apagarCasas();
 
+            if(conjunto.verificarPromocao(1)) promover();
+
             conjunto.jogarPreta();
         }
         else{
 
             tabuleiro.apagarCasas();
         }
-
-        console.log(conjunto.enPassant);
     }
 })

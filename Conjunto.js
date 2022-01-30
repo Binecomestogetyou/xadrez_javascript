@@ -156,9 +156,11 @@ class Conjunto {
             else{
                 
                 if(mov.natureza != "EN_PASSANT_PASSIVO") this.enPassant = null;
-                return;
+                break;
             }
         }
+
+        if(this.verificarPromocao()) this.promover();
     }
 
     /*************************************************************************************************
@@ -181,29 +183,49 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    promover(peao, promovido){
+    promover(classe){
+        let aux = [...this.Pretas, ...this.Brancas];
+        let promovendo;
 
-        let aux = peao.obterCor() == 1 ? Brancas : Pretas;
-        
-        destruir(peao.obterPosicao(), peao.obterCor());
-        
-        switch(Math.floor(Math.random()*4)){
-        
-            case 0:
-                aux.push(new Torre(promovido, peao.obterCor()));
-                break;
-                
-            case 1:
-                aux.push(new Cavalo(promovido, peao.obterCor()));
-                break;
-                
-            case 2:
-                aux.push(new Bispo(promovido, peao.obterCor()));
-                break;
-                
-            case 3:
-                aux.push(new Dama(promovido, peao.obterCor()));
+        console.log(aux)
+
+        for(let i = 0; i < aux.length; i++){
+
+            if(aux[i].constructor.name === "Peao" && (aux[i].posicao.linha == 1 || aux[i].posicao.linha == 8)){
+                promovendo = aux[i];
+            }
         }
+
+        aux = promovendo.cor == -1 ? this.Pretas : this.Brancas;
+
+        let determinante;
+
+        switch(classe){
+
+            case "Torre":
+                determinante = 0;
+                break;
+
+            case "Cavalo":
+                determinante = 1;
+                break;
+
+            case "Bispo":
+                determinante = 2;
+                break;
+
+            case "Dama":
+                determinante = 3;
+                break;
+
+            default:
+                determinante = Math.floor(Math.random()*4);
+                break;
+        }
+        
+        aux.push(promovendo.promover(determinante));
+
+        aux.splice(aux.indexOf(promovendo), 1);
     }
 
     /*************************************************************************************************
@@ -220,5 +242,24 @@ class Conjunto {
 		    return this.enPassant.obterPosicao().igual(posicaoCorrigida)
                     && this.enPassant.cor == cor ? true : false;
         }
+    }
+
+    /*************************************************************************************************
+    **************************************************************************************************
+    *************************************************************************************************/
+
+    verificarPromocao(cor){
+
+        let aux = cor == 1 ? [...this.Brancas] : [...this.Pretas];
+
+        for(let i = 0; i < aux.length; i++){
+
+            if(aux[i].constructor.name === "Peao" && (aux[i].posicao.linha == 1 || aux[i].posicao.linha == 8)){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
