@@ -1,11 +1,157 @@
 class Peca {
 
+    elemento;
+    conjunto;
+
     constructor(elemento, conjunto){
 
         this.elemento = elemento;
         this.conjunto = conjunto;
         this.posicao = new Posicao(elemento.parentNode.id);
         this._cor = elemento.className.includes("branca") ? 1 : -1;
+    }
+
+    /********************************************************************
+     ********************************************************************
+     *******************************************************************/
+
+    gerarMovimentosCardeais(reiChamou){
+
+        let aux;
+        let movimentos = new Array();
+
+	    // Gerar movimentos no sentido decrescente das linhas
+	    if(this.posicao.linha > 1){
+	
+		    for(let i = this.posicao.linha - 1; i > 0; i--) {
+		
+		    	aux = new Posicao(this.posicao.coluna, i);
+			
+		    	if(this.conjunto.estaVazia(aux)){
+			
+		    		let mov = new Movimento(aux, "NEUTRO");
+				
+		    		movimentos.push(mov);
+		    	}
+		    	else{
+			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+				
+			    		let mov = new Movimento(aux, "CAPTURA");
+				
+			    		movimentos.push(mov);
+			    	}
+				
+			    	break;
+			    }
+			
+			    if(reiChamou){
+			
+			    	break;
+			    }
+			
+		    }
+		
+	    }
+	
+	    // Gerar movimentos no sentido crescente das linhas
+	    if(this.posicao.linha < 8 ){
+	
+		    for(let i = this.posicao.linha + 1; i < 9; i++){
+		
+			    aux = new Posicao(this.posicao.coluna, i);
+			
+			    if(this.conjunto.estaVazia(aux)){
+			
+			    	let mov = new Movimento(aux, "NEUTRO");
+				
+			    	movimentos.push(mov);
+			    }
+			    else{
+			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+				
+			    		let mov = new Movimento(aux, "CAPTURA");
+				
+			    		movimentos.push(mov);
+			    	}
+				
+			    	break;
+			    }
+			
+			    if(reiChamou){
+			
+			    	break;
+			    }
+			
+		    }
+		
+	    }
+	
+	    // Gerar movimentos no sentido decrescente das colunas
+	    if(this.posicao.coluna > 1){
+	
+		    for(let i = this.posicao.coluna - 1; i > 0; i--){
+
+		    	aux = new Posicao(i, this.posicao.linha);
+			
+		    	if(this.conjunto.estaVazia(aux)){
+			
+		    		let mov = new Movimento(aux, "NEUTRO");
+				
+		    		movimentos.push(mov);
+		    	}
+		    	else{
+		    		if(this.conjunto.inimigaOcupa(this.cor, aux)){
+				
+			    		let mov = new Movimento(aux, "CAPTURA");
+				
+			    		movimentos.push(mov);
+			    	}
+				
+			    	break;
+			    }
+			
+			    if(reiChamou){
+			
+			    	break;
+			    }
+			
+		    }
+		
+	    }
+	
+	    // Gerar movimentos no sentido crescente das colunas
+	    if(this.posicao.coluna < 8){
+	
+	    	for(let i = this.posicao.coluna + 1; i < 9; i++){
+		
+	    		aux = new Posicao(i, this.posicao.linha);
+			
+	    		if(this.conjunto.estaVazia(aux)){
+			
+			    	let mov = new Movimento(aux, "NEUTRO");
+				
+			    	movimentos.push(mov);
+			    }
+			    else{
+			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+				
+			    		let mov = new Movimento(aux, "CAPTURA");
+			    		movimentos.push(mov);
+			    	}
+				
+			    	break;
+			    }
+			
+			    if(reiChamou){
+			
+			    	break;
+			    }
+			
+		    }
+		
+	    }
+
+        return movimentos;
     }
 
     /*************************************************************************************************

@@ -1,8 +1,13 @@
 class Torre extends Peca{
 
-    constructor(elemento){
+    constructor(elemento, conjunto){
 
-        super(elemento);
+        super(elemento, conjunto);
+    }
+
+    gerarMovimentos(){
+
+        return this.gerarMovimentosCardeais(false);
     }
 
     mover(){
@@ -11,6 +16,9 @@ class Torre extends Peca{
 	
 	    if(this.movimentos.length == 0) return null;
 	    else{
+
+            console.log(this);
+            console.log(this.movimentos);
 	
 	    	let mov = this.movimentos[Math.floor(Math.random()*this.movimentos.length)];
             

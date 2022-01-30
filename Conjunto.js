@@ -18,11 +18,11 @@ class Conjunto {
                     case "peao":
                         piece = new Peao(peca, este);
                         break;
-/*
+
                     case "torre":
                         piece = new Torre(peca, este);
                         break;
-
+/*
                     case "cavalo":
                         piece = new Cavalo(peca, este);
                         break;
@@ -186,8 +186,6 @@ class Conjunto {
     promover(classe){
         let aux = [...this.Pretas, ...this.Brancas];
         let promovendo;
-
-        console.log(aux)
 
         for(let i = 0; i < aux.length; i++){
 
