@@ -4,6 +4,7 @@ class Conjunto {
 
         this.Brancas = new Array();
         this.Pretas = new Array();
+        this.enPassant = null;
         let este = this;
 
         pecas.forEach(peca => {
@@ -66,7 +67,7 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    definirEnPassant(peao){ enPassant = peao; }
+    definirEnPassant(peao){ this.enPassant = peao; }
 
     /*************************************************************************************************
      *************************************************************************************************
@@ -97,6 +98,13 @@ class Conjunto {
         }
     }
 
+    destruirEnPassant(){
+
+        this.destruir(this.enPassant.obterPosicao(), this.enPassant.cor);
+	
+	    this.enPassant = null;
+    }
+
     /*************************************************************************************************
      *************************************************************************************************
      ************************************************************************************************/
@@ -110,22 +118,6 @@ class Conjunto {
         this.Pretas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
         
         return estavazia;
-    }
-
-    executarMovimento(ultima, mov){
-
-        ultima.posicao = mov.posicao;
-
-        if(mov.natureza === "EN_PASSANT"){
-
-            this.definirEnPassant = ultima;
-        }
-        else if(mov.natureza === "CAPTURA"){
-
-            this.destruir(mov.posicao);
-        }
-
-        if(ultima.classe === "Peao" || ultima.classe === "Torre") ultima.primeiroMovimento = false;
     }
 
     /*************************************************************************************************
@@ -163,10 +155,12 @@ class Conjunto {
             if(mov === null) aux.splice(a, 1);
             else{
                 
-                aux[a].executarMovimento(mov)
-                return;
+                if(mov.natureza != "EN_PASSANT_PASSIVO") this.enPassant = null;
+                break;
             }
         }
+
+        if(this.verificarPromocao()) this.promover();
     }
 
     /*************************************************************************************************
@@ -183,44 +177,89 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    obterEnPassant(){ return enPassant; }
+    obterEnPassant(){ return this.enPassant; }
 
     /*************************************************************************************************
      *************************************************************************************************
      ************************************************************************************************/
 
-    promover(peao, promovido){
+    promover(classe){
+        let aux = [...this.Pretas, ...this.Brancas];
+        let promovendo;
 
-        let aux = peao.obterCor() == 1 ? Brancas : Pretas;
-        
-        destruir(peao.obterPosicao(), peao.obterCor());
-        
-        switch(Math.floor(Math.random()*4)){
-        
-            case 0:
-                aux.push(new Torre(promovido, peao.obterCor()));
-                break;
-                
-            case 1:
-                aux.push(new Cavalo(promovido, peao.obterCor()));
-                break;
-                
-            case 2:
-                aux.push(new Bispo(promovido, peao.obterCor()));
-                break;
-                
-            case 3:
-                aux.push(new Dama(promovido, peao.obterCor()));
+        console.log(aux)
+
+        for(let i = 0; i < aux.length; i++){
+
+            if(aux[i].constructor.name === "Peao" && (aux[i].posicao.linha == 1 || aux[i].posicao.linha == 8)){
+                promovendo = aux[i];
+            }
         }
+
+        aux = promovendo.cor == -1 ? this.Pretas : this.Brancas;
+
+        let determinante;
+
+        switch(classe){
+
+            case "Torre":
+                determinante = 0;
+                break;
+
+            case "Cavalo":
+                determinante = 1;
+                break;
+
+            case "Bispo":
+                determinante = 2;
+                break;
+
+            case "Dama":
+                determinante = 3;
+                break;
+
+            default:
+                determinante = Math.floor(Math.random()*4);
+                break;
+        }
+        
+        aux.push(promovendo.promover(determinante));
+
+        aux.splice(aux.indexOf(promovendo), 1);
     }
 
     /*************************************************************************************************
      *************************************************************************************************
      ************************************************************************************************/
 
-    valeEnPassant(posicao){
+    valeEnPassant(posicao, cor){
 
-        if(enPassant === null) return false;
-        else return posicao == enPassant.obterPosicao();
+        let posicaoCorrigida = new Posicao(posicao.coluna, posicao.linha + cor);
+
+        if(this.enPassant === null) return false;
+        else{
+		
+		    return this.enPassant.obterPosicao().igual(posicaoCorrigida)
+                    && this.enPassant.cor == cor ? true : false;
+        }
+    }
+
+    /*************************************************************************************************
+    **************************************************************************************************
+    *************************************************************************************************/
+
+    verificarPromocao(cor){
+
+        let aux = cor == 1 ? [...this.Brancas] : [...this.Pretas];
+
+        for(let i = 0; i < aux.length; i++){
+
+            if(aux[i].constructor.name === "Peao" && (aux[i].posicao.linha == 1 || aux[i].posicao.linha == 8)){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

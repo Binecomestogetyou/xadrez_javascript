@@ -8,56 +8,20 @@ class Peca {
         this._cor = elemento.className.includes("branca") ? 1 : -1;
     }
 
-    static criar(peca){
-
-        let classes = peca.className;
-
-        switch(classes.split(" ")[2]){
-
-            case "peao":
-                return new Peao(peca);
-
-            case "torre":
-                return new Torre(peca);
-
-            case "cavalo":
-                return new Cavalo(peca);
-
-            case "bispo":
-                return new Bispo(peca);
-
-            case "dama":
-                return new Dama(peca);
-
-            case "rei":
-                return new Rei(peca);
-       
-        }
-    }
-
     /*************************************************************************************************
      *************************************************************************************************
      ************************************************************************************************/
 
     movimentoEPossivel(posicao){
 
-       let aux = null;
-        if(this.movimentosPossiveis.length == 0 || this.movimentosPossiveis === undefined){
+       let movimentos = this.movimentosPossiveis;
+       
+       for(let i = 0; i < movimentos.length; i++){
 
-            return null;
-        }
-        else{
+            if(movimentos[i].destino.igual(posicao)) return movimentos[i].natureza;
+       }
 
-            this.obterMovimentos.forEach(movimento => {
-                
-                if(movimento.destino.igual(posicao)) {
-                    aux = movimento;
-                    return;
-                }
-            });
-        }
-
-        return aux;
+        return "";
     }
 
     mudarPosicao(destino){
@@ -70,11 +34,9 @@ class Peca {
         return this._cor;
     }
 
-    get obterMovimentos(){
+    get movimentosPossiveis(){
 
-        this.movimentosPossiveis = this.gerarMovimentos();
-
-        return this.movimentosPossiveis;
+        return this.gerarMovimentos();
     }
 
     get obterPosicoes(){
@@ -92,5 +54,16 @@ class Peca {
     obterPosicao(){
 
         return this.posicao;
+    }
+
+    get posicoesPossiveis(){
+
+        let posicoes = new Array;
+
+        let movimentos = this.movimentosPossiveis;
+
+        movimentos.forEach(mov => { posicoes.push(mov.destino)});
+
+        return posicoes;
     }
 }

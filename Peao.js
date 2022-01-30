@@ -23,6 +23,7 @@ class Peao extends Peca{
 
         this.primeiroMovimento = false;
         this.mudarPosicao(movimento.destino);
+        this.conjunto.limparEnPassant = false;
   
         switch(movimento.natureza){
 
@@ -30,12 +31,13 @@ class Peao extends Peca{
                 this.conjunto.destruir(movimento.destino, -this.cor);
                 break;
 
-            case "EN_PASSANT_PASSIVA":
+            case "EN_PASSANT_PASSIVO":
+
                 this.conjunto.definirEnPassant(this);
-                this.conjunto.definirStatusEnPassant(false);
+                this.conjunto.limparEnPassant = false;
                 break;
                     
-            case "EN_PASSANT_ATIVA":
+            case "EN_PASSANT_ATIVO":
                     this.conjunto.destruirEnPassant();
         }
     }
@@ -61,20 +63,24 @@ class Peao extends Peca{
             }
         }
     
-        pos = new Posicao(this.posicao.coluna - 1, this.posicao.linha + this.cor);
+        
 
-        if(this.posicao.coluna > 1 && this.conjunto.inimigaOcupa(-this.cor, pos))
-           /* || Conjunto.valeEnPassant(new Posicao(this.posicao.coluna - 1, this.posicao.linha + 1)) )*/{
-                
-            movimentos.push(new Movimento(pos, "CAPTURA"));
-        }
-
-        pos = new Posicao(this.posicao.coluna + 1, this.posicao.linha + this.cor);
+        if(this.posicao.coluna > 1){
             
-        if(this.posicao.coluna < 8 && this.conjunto.inimigaOcupa(-this.cor, pos)){
-            // || Conjunto.valeEnPassant(Posicao(this.posicao.coluna + 1, this.posicao.linha + 1)) )*/){
+            pos = new Posicao(this.posicao.coluna - 1, this.posicao.linha + this.cor);
+
+            if(this.conjunto.inimigaOcupa(-this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+            else if(this.conjunto.valeEnPassant(pos, -this.cor)) movimentos.push(new Movimento(pos, "EN_PASSANT_ATIVO"));
                 
-            movimentos.push(new Movimento(pos, "CAPTURA"));
+            
+        }
+            
+        if(this.posicao.coluna < 8){
+            
+            pos = new Posicao(this.posicao.coluna + 1, this.posicao.linha + this.cor);
+            
+            if(this.conjunto.inimigaOcupa(-this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+            else if(this.conjunto.valeEnPassant(pos, -this.cor)) movimentos.push(new Movimento(pos, "EN_PASSANT_ATIVO"));
         }
 
         return movimentos
@@ -92,13 +98,8 @@ class Peao extends Peca{
 	    else{
 	
 	    	let mov = this.movimentos[Math.floor(Math.random()*this.movimentos.length)];
-            this.mudarPosicao(mov.destino);
-
-            let casa = document.getElementById(mov.destino.emString());
-
-            casa.appendChild(this.elemento);
-		
-            this.conjunto.statusEnPassant = true;
+            
+            this.executarMovimento(mov);
 	
     	    return mov;
         }
@@ -111,6 +112,44 @@ class Peao extends Peca{
      mudarPosicao(destino){
         
         this.posicao = destino;
+
+        document.getElementById(destino.emString).appendChild(this.elemento);
+    }
+
+    /*************************************************************************************************
+     *************************************************************************************************
+     ************************************************************************************************/
+
+    promover(peca){
+
+        let novaPeca;
+
+        switch(peca){
+
+            case 0:
+                this.elemento.className = this.elemento.className.replace("peao", "torre");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/TP.png" : "./res/images/TB.png";
+                
+                return new Torre(this.elemento, this.conjunto);
+
+            case 1:
+                this.elemento.className = this.elemento.className.replace("peao", "cavalo");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/CP.png" : "./res/images/CB.png";
+                    
+                return new Cavalo(this.elemento, this.conjunto);
+            
+            case 2:
+                this.elemento.className = this.elemento.className.replace("peao", "bispo");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/BP.png" : "./res/images/BB.png";
+                    
+                return new Bispo(this.elemento, this.conjunto);
+
+            case 3:
+                this.elemento.className = this.elemento.className.replace("peao", "dama");
+                this.elemento.src = this.elemento.className.includes("preta") ? "./res/images/DP.png" : "./res/images/DB.png";
+                    
+                return new Dama(this.elemento, this.conjunto);
+        }
     }
         
 
