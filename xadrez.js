@@ -1,5 +1,6 @@
-let conjunto = new Conjunto(Array.from(document.getElementsByClassName("peca")));
-let tabuleiro = new Tabuleiro(Array.from(document.getElementsByClassName("casa")));
+let conjunto = new Conjunto();
+conjunto.popular(Array.from(document.getElementsByClassName("peca")));
+
 let promocao = document.getElementById("promocao");
 
 Array.from(promocao.children).forEach(filho => {
@@ -20,22 +21,7 @@ function promover(){
     });
 }
 
-conjunto.Brancas.forEach(peca =>
-    
-        {
-            
-            peca.elemento.addEventListener("click", function(event){
-
-                event.stopPropagation();
-
-                tabuleiro.acender(peca.posicoesPossiveis);
-
-                conjunto.definirUltimaPecaClicada = peca;
-            });
-        }
-    );
-
-tabuleiro.obterCasas.forEach(casa => {
+Array.from(document.getElementsByClassName("casa")).forEach(casa => {
 
     casa.onclick = function(){
 
@@ -49,7 +35,7 @@ tabuleiro.obterCasas.forEach(casa => {
 
             if(mov.natureza != "EN_PASSANT_PASSIVO") conjunto.enPassant = null;
 
-            tabuleiro.apagarCasas();
+            Tabuleiro.apagarCasas();
 
             if(conjunto.verificarPromocao(1)) promover();
 
@@ -57,7 +43,7 @@ tabuleiro.obterCasas.forEach(casa => {
         }
         else{
 
-            tabuleiro.apagarCasas();
+            Tabuleiro.apagarCasas();
         }
     }
-})
+});

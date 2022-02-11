@@ -1,52 +1,10 @@
 class Conjunto {
 
-    constructor(pecas){
+    constructor(){
 
         this.Brancas = new Array();
         this.Pretas = new Array();
-        this.enPassant = null;
-        let este = this;
-
-        pecas.forEach(peca => {
-
-            let classes = peca.className;
-
-            let piece;
-
-                switch(classes.split(" ")[2]){
-
-                    case "peao":
-                        piece = new Peao(peca, este);
-                        break;
-
-                    case "torre":
-                        piece = new Torre(peca, este);
-                        break;
-/*
-                    case "cavalo":
-                        piece = new Cavalo(peca, este);
-                        break;
-
-                    case "bispo":
-                        piece = new Bispo(peca, este);
-                        break;
-
-                    case "dama":
-                        piece = new Dama(peca, este);
-                        break;
-
-                    case "rei":
-                        piece = new Rei(peca, este);
-                        */
-                }
-
-                if(piece !== undefined){
-                if(piece.cor == 1) this.Brancas.push(piece);
-                else this.Pretas.push(piece);}
-            }
-        );
-
-        
+        this.enPassant = null;        
     }
 
     /*************************************************************************************************
@@ -73,9 +31,14 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
-    set definirUltimaPecaClicada(peca){
+    set ultimaPecaClicada(peca){
 
-        this.ultimaPecaClicada = peca;
+        this._ultimaPecaClicada = peca;
+    }
+
+    get ultimaPecaClicada(){
+
+        return this._ultimaPecaClicada;
     }
 
     destruir(posicao, cor){
@@ -86,7 +49,7 @@ class Conjunto {
                 
             if(aux[i].obterPosicao().igual(posicao)){
 
-                let eleAux = aux[i].elemento;
+                let eleAux = aux[i]._elemento;
 
                 eleAux.parentNode.removeChild(eleAux);
 
@@ -183,6 +146,54 @@ class Conjunto {
      *************************************************************************************************
      ************************************************************************************************/
 
+    // pecas é um array de elementos <img> com as imagens das peças
+    popular(pecas){
+        
+        pecas.forEach(peca => {
+
+        let classes = peca.className;
+
+        let piece;
+
+            switch(classes.split(" ")[2]){
+
+                case "peao":
+                    piece = new Peao(peca, this);
+                    break;
+
+                case "torre":
+                    piece = new Torre(peca, this);
+                    break;
+/*
+                case "cavalo":
+                    piece = new Cavalo(peca, este);
+                    break;
+
+                case "bispo":
+                    piece = new Bispo(peca, este);
+                    break;
+
+                case "dama":
+                    piece = new Dama(peca, este);
+                    break;
+
+                case "rei":
+                    piece = new Rei(peca, este);
+                    */
+            }
+
+            if(piece !== undefined){
+                if(piece.cor == 1) this.Brancas.push(piece);
+                else this.Pretas.push(piece);
+            }
+        }
+    );
+}
+
+    /*************************************************************************************************
+     *************************************************************************************************
+     ************************************************************************************************/
+    
     promover(classe){
         let aux = [...this.Pretas, ...this.Brancas];
         let promovendo;
