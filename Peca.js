@@ -1,14 +1,34 @@
 class Peca {
 
-    elemento;
-    conjunto;
+    _elemento;
+    _conjunto;
 
     constructor(elemento, conjunto){
 
-        this.elemento = elemento;
-        this.conjunto = conjunto;
+        this._elemento = elemento;
+        this._conjunto = conjunto;
         this.posicao = new Posicao(elemento.parentNode.id);
-        this._cor = elemento.className.includes("branca") ? 1 : -1;
+
+        if(elemento.className.includes("branca")){
+
+			// Variável usada para acessar o objeto em construção
+			// dentro da função onclick
+			
+			const isto = this;
+			
+			this._cor = 1;
+
+			this._elemento.onclick = function(event){
+
+                event.stopPropagation();
+
+                Tabuleiro.acender(isto.posicoesPossiveis);
+
+				isto._conjunto.ultimaPecaClicada = isto;
+            }
+		
+		}
+		else this._cor = -1;
     }
 
     /********************************************************************
@@ -27,14 +47,14 @@ class Peca {
 		
 		    	aux = new Posicao(this.posicao.coluna, i);
 			
-		    	if(this.conjunto.estaVazia(aux)){
+		    	if(this._conjunto.estaVazia(aux)){
 			
 		    		let mov = new Movimento(aux, "NEUTRO");
 				
 		    		movimentos.push(mov);
 		    	}
 		    	else{
-			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+			    	if(this._conjunto.inimigaOcupa(-this.cor, aux)){
 				
 			    		let mov = new Movimento(aux, "CAPTURA");
 				
@@ -60,14 +80,14 @@ class Peca {
 		
 			    aux = new Posicao(this.posicao.coluna, i);
 			
-			    if(this.conjunto.estaVazia(aux)){
+			    if(this._conjunto.estaVazia(aux)){
 			
 			    	let mov = new Movimento(aux, "NEUTRO");
 				
 			    	movimentos.push(mov);
 			    }
 			    else{
-			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+			    	if(this._conjunto.inimigaOcupa(-this.cor, aux)){
 				
 			    		let mov = new Movimento(aux, "CAPTURA");
 				
@@ -93,14 +113,14 @@ class Peca {
 
 		    	aux = new Posicao(i, this.posicao.linha);
 			
-		    	if(this.conjunto.estaVazia(aux)){
+		    	if(this._conjunto.estaVazia(aux)){
 			
 		    		let mov = new Movimento(aux, "NEUTRO");
 				
 		    		movimentos.push(mov);
 		    	}
 		    	else{
-		    		if(this.conjunto.inimigaOcupa(this.cor, aux)){
+		    		if(this._conjunto.inimigaOcupa(-this.cor, aux)){
 				
 			    		let mov = new Movimento(aux, "CAPTURA");
 				
@@ -126,14 +146,14 @@ class Peca {
 		
 	    		aux = new Posicao(i, this.posicao.linha);
 			
-	    		if(this.conjunto.estaVazia(aux)){
+	    		if(this._conjunto.estaVazia(aux)){
 			
 			    	let mov = new Movimento(aux, "NEUTRO");
 				
 			    	movimentos.push(mov);
 			    }
 			    else{
-			    	if(this.conjunto.inimigaOcupa(this.cor, aux)){
+			    	if(this._conjunto.inimigaOcupa(-this.cor, aux)){
 				
 			    		let mov = new Movimento(aux, "CAPTURA");
 			    		movimentos.push(mov);
@@ -171,8 +191,10 @@ class Peca {
     }
 
     mudarPosicao(destino){
+        
+        this.posicao = destino;
 
-        console.log(this.elemento);
+        document.getElementById(destino.emString).appendChild(this._elemento);
     }
 
     get cor(){

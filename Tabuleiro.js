@@ -1,58 +1,57 @@
-class Tabuleiro{
+var Tabuleiro = {
 
-    constructor(casas){
+    casasAcesas: undefined
+};
 
-        this._casas = casas
-    }
 
-    acender(casas){
+Tabuleiro.acender = function(casas){
 
-        
+    if(this.casasAcesas !== undefined) this.apagarCasas();
 
-        if(this.casasAcesas !== undefined) this.apagarCasas();
+    this.acenderCasas(casas); 
+}
 
-        this.acenderCasas(casas);
 
-        
-    }
+Tabuleiro.apagarCasas = function(){
 
-    apagarCasas(){
-
-        this.casasAcesas.forEach(item =>
-            {
+    this.casasAcesas.forEach(item =>
+        {
                 
-                let casa = document.getElementById(item.emString);
+            let casa = document.getElementById(item.emString);
 
-                if(casa.classList.contains("clara")){
-                    casa.style.backgroundColor = "#6495ed";
-                }
-                else{
-                    casa.style.backgroundColor = "#000080";
-                }
-            })
-    }
-
-    acenderCasas(casasParaAcender){
-
-        this.casasAcesas = casasParaAcender;
-
-        this.casasAcesas.forEach(item =>
-            
-            {
-                let casa = document.getElementById(item.emString);
-
-                if(casa.classList.contains("clara")){
-                    casa.style.backgroundColor = "#ba55d3";
-                }
-                else{
-                    casa.style.backgroundColor = "#4b0082";
-                }
+            if(casa.classList.contains("clara")){
+                casa.style.backgroundColor = "#6495ed";
             }
-            );
-    }
+            else{
+                casa.style.backgroundColor = "#000080";
+            }
+        });
 
-    get obterCasas(){
+    this.casasAcesas = undefined;
+}
 
-        return this._casas;
-    }
+
+
+Tabuleiro.acenderCasas = function(casasParaAcender){
+
+    this.casasAcesas = casasParaAcender;
+
+    this.casasAcesas.forEach(item =>
+            
+        {
+            let casa = document.getElementById(item.emString);
+
+            if(casa.classList.contains("clara")){
+                casa.style.backgroundColor = "#ba55d3";
+            }
+            else{
+                casa.style.backgroundColor = "#4b0082";
+            }
+        }
+        );
+}
+
+Tabuleiro.obterCasas = function(){
+
+    return this._casas;
 }
