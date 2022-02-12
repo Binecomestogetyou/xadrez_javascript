@@ -17,7 +17,7 @@ class Conjunto {
 
         
         aux.forEach(peca =>
-            {if(peca.obterPosicao() == posicao) destruir(posicao, a.obterCor());}
+            {if(peca.posicao == posicao) destruir(posicao, a.obterCor());}
         );
     }
 
@@ -47,7 +47,7 @@ class Conjunto {
         
         for(let i = 0; i < aux.length; i++){
                 
-            if(aux[i].obterPosicao().igual(posicao)){
+            if(aux[i].posicao.igual(posicao)){
 
                 let eleAux = aux[i]._elemento;
 
@@ -63,7 +63,7 @@ class Conjunto {
 
     destruirEnPassant(){
 
-        this.destruir(this.enPassant.obterPosicao(), this.enPassant.cor);
+        this.destruir(this.enPassant.posicao, this.enPassant.cor);
 	
 	    this.enPassant = null;
     }
@@ -77,8 +77,8 @@ class Conjunto {
 
         let estavazia = true;
 
-        this.Brancas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
-        this.Pretas.forEach(peca => { if( peca.obterPosicao().igual(casa)) estavazia = false;});
+        this.Brancas.forEach(peca => { if( peca.posicao.igual(casa)) estavazia = false;});
+        this.Pretas.forEach(peca => { if( peca.posicao.igual(casa)) estavazia = false;});
         
         return estavazia;
     }
@@ -93,7 +93,7 @@ class Conjunto {
 
         let aux = cor == -1 ? this.Pretas : this.Brancas;
         
-        aux.forEach(peca => {if(peca.obterPosicao().igual(posicao)) inimigaocupa = true;});
+        aux.forEach(peca => {if(peca.posicao.igual(posicao)) inimigaocupa = true;});
         
         return inimigaocupa;
     }
@@ -164,17 +164,17 @@ class Conjunto {
                 case "torre":
                     piece = new Torre(peca, this);
                     break;
-/*
-                case "cavalo":
-                    piece = new Cavalo(peca, este);
-                    break;
 
+                case "cavalo":
+                    piece = new Cavalo(peca, this);
+                    break;
+/*
                 case "bispo":
-                    piece = new Bispo(peca, este);
+                    piece = new Bispo(peca, this);
                     break;
 
                 case "dama":
-                    piece = new Dama(peca, este);
+                    piece = new Dama(peca, this);
                     break;
 
                 case "rei":
@@ -248,7 +248,7 @@ class Conjunto {
         if(this.enPassant === null) return false;
         else{
 		
-		    return this.enPassant.obterPosicao().igual(posicaoCorrigida)
+		    return this.enPassant.posicao.igual(posicaoCorrigida)
                     && this.enPassant.cor == cor ? true : false;
         }
     }

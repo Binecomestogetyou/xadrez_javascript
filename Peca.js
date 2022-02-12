@@ -7,7 +7,7 @@ class Peca {
 
         this._elemento = elemento;
         this._conjunto = conjunto;
-        this.posicao = new Posicao(elemento.parentNode.id);
+        this._posicao = new Posicao(elemento.parentNode.id);
 
         if(elemento.className.includes("branca")){
 
@@ -207,6 +207,16 @@ class Peca {
         return this.gerarMovimentos();
     }
 
+	get posicao(){
+
+		return this._posicao;
+	}
+
+	set posicao(pos){
+
+		this._posicao = pos;
+	}
+
     get obterPosicoes(){
 
         let posicoes = new Array();
@@ -217,11 +227,6 @@ class Peca {
         })
 
         return posicoes;
-    }
-
-    obterPosicao(){
-
-        return this.posicao;
     }
 
     get posicoesPossiveis(){
