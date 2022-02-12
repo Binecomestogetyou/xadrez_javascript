@@ -172,11 +172,11 @@ class Conjunto {
                 case "bispo":
                     piece = new Bispo(peca, this);
                     break;
-/*
+
                 case "dama":
                     piece = new Dama(peca, this);
                     break;
-
+/*
                 case "rei":
                     piece = new Rei(peca, este);
                     */
