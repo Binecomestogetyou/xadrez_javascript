@@ -178,6 +178,101 @@ class Peca {
      *************************************************************************************************
      ************************************************************************************************/
 
+	gerarMovimentosColaterais(reiChamou){
+
+		let movimentos = new Array();
+		let pos;
+
+		if(this.posicao.coluna < 8 && this.posicao.linha < 8){
+	
+			for(let i = this.posicao.coluna + 1, j = this.posicao.linha + 1; i < 9 && j < 9; i++, j++){
+			
+				pos = new Posicao(i, j);
+				
+				if(this._conjunto.estaVazia(pos)) movimentos.push(new Movimento(pos, "NEUTRO"));
+				else{
+				
+					if(this._conjunto.inimigaOcupa( -this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+					break;
+				}
+				
+				if(reiChamou){
+				
+					break;
+				}
+			}
+		}
+		
+		// Gerar movimentos na direção Noroeste
+		if(this.posicao.coluna > 1 && this.posicao.linha < 8){
+		
+			for(let i = this.posicao.coluna - 1, j = this.posicao.linha + 1; i > 0 && j < 9; i--, j++){
+			
+				pos = new Posicao(i, j);
+				
+				if(this._conjunto.estaVazia(pos)) movimentos.push(new Movimento(pos, "NEUTRO"));
+				else{
+				
+					if(this._conjunto.inimigaOcupa( -this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+					break;
+				}
+				
+				if(reiChamou){
+				
+					break;
+				}
+			}
+		}
+		
+		// Gerar movimentos na direção Sudoeste
+		if(this.posicao.coluna > 1 && this.posicao.linha > 1){
+		
+			for(let i = this.posicao.coluna - 1, j = this.posicao.linha - 1; i > 0 && j > 0; i--, j--){
+			
+				pos = new Posicao(i, j);
+				
+				if(this._conjunto.estaVazia(pos)) movimentos.push(new Movimento(pos, "NEUTRO"));
+				else{
+				
+					if(this._conjunto.inimigaOcupa( -this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+					break;
+				}
+				
+				if(reiChamou){
+				
+					break;
+				}
+			}
+		}
+		
+		// Gerar movimentos na direção Sudeste
+		if(this.posicao.coluna < 8 && this.posicao.linha > 1){
+		
+			for(let i = this.posicao.coluna + 1, j = this.posicao.linha - 1; i < 9 && j > 0; i++, j--){
+			
+				pos = new Posicao(i, j);
+				
+				if(this._conjunto.estaVazia(pos)) movimentos.push(new Movimento(pos, "NEUTRO"));
+				else{
+				
+					if(this._conjunto.inimigaOcupa( -this.cor, pos)) movimentos.push(new Movimento(pos, "CAPTURA"));
+					break;
+				}
+				
+				if(reiChamou){
+				
+					break;
+				}
+			}
+		}
+
+		return movimentos
+	}
+	
+    /*************************************************************************************************
+     *************************************************************************************************
+     ************************************************************************************************/
+
     movimentoEPossivel(posicao){
 
        let movimentos = this.movimentosPossiveis;
